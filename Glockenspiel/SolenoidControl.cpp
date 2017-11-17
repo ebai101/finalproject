@@ -12,9 +12,8 @@ SolenoidControl::SolenoidControl(int _latchPin, int _clockPin, int _dataPin) {
 }
 
 void SolenoidControl::hitNote(int note) {
-  uint16_t noteBin = 0b0000000000000001;
-  noteBin = noteBin << note; // shifts bit to the right position given note value
-  /*
+  uint16_t noteBin = 0b0000000000000001 << note; // shifts bit to the right position given note value
+
   digitalWrite(latchPin, LOW);
   shiftOut(dataPin, clockPin, MSBFIRST, noteBin);
   digitalWrite(latchPin, HIGH);
@@ -22,7 +21,6 @@ void SolenoidControl::hitNote(int note) {
   digitalWrite(latchPin, LOW);
   shiftOut(dataPin, clockPin, MSBFIRST, 0);
   digitalWrite(latchPin, HIGH);
-  */
 }
 
 void SolenoidControl::checkNote(int note) {
