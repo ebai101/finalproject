@@ -1,12 +1,3 @@
-//**************************************************************//
-//  Name    : shiftOutCode, Hello World                                
-//  Author  : Carlyn Maw,Tom Igoe, David A. Mellis 
-//  Date    : 25 Oct, 2006    
-//  Modified: 23 Mar 2010                                 
-//  Version : 2.0                                             
-//  Notes   : Code for using a 74HC595 Shift Register           //
-//          : to count from 0 to 255                           
-//****************************************************************
 
 //Pin connected to ST_CP of 74HC595
 int latchPin = 37;
@@ -15,7 +6,7 @@ int clockPin = 38;
 ////Pin connected to DS of 74HC595
 int dataPin = 39;
 
-
+int count = 0;
 
 void setup() {
   //set pins to output so you can control the shift register
@@ -29,16 +20,28 @@ void setup() {
 }
 
 void loop() {
-  // count from 0 to 255 and display the number 
-  // on the LEDs
+  
+  long shift = setShift(count);
+  
   digitalWrite(latchPin, LOW);
-  shiftOut(dataPin, clockPin, MSBFIRST, 255);
+  shiftOut(dataPin, clockPin, MSBFIRST, 0b11111111);
+  shiftOut(dataPin, clockPin, MSBFIRST, 0b11111111);
   digitalWrite(latchPin, HIGH);
-  delay(500);
+  Serial.println(count);
+  delay(20);
 
   digitalWrite(latchPin, LOW);
   shiftOut(dataPin, clockPin, MSBFIRST, 0);
+  shiftOut(dataPin, clockPin, MSBFIRST, 0);
   digitalWrite(latchPin, HIGH);
-  delay(500);
+  delay(20);
+
+  count++;
+  if(count > 15)
+    count = 0;
+}
+
+long setShift(int count) {
+  return (uint16_t) 1 << count;
 }
 

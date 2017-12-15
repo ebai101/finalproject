@@ -6,15 +6,22 @@
 class SolenoidControl
 {
   public:
-    SolenoidControl(int, int, int);
+    SolenoidControl();
 
+    void process();
     void hitNote(int);
+    void releaseNote(int);
     void checkNote(int);
 
-    int latchPin;
-    int clockPin;
-    int dataPin;
-    int MIDINotes[15] = {43, 45, 47, 48, 50, 52, 53, 55, 57, 59, 60, 62, 64, 65, 67};
+    int lastNote;
+
+    int checkInterval;
+    unsigned long lastCheck;
+    unsigned long noteOnTime;
+    unsigned long lastNoteTime;
+
+    int pins[15] = {32, 31, 30, 29, 28, 27, 26, 25, 24, 33, 34, 35, 36, 37};
+    int MIDINotes[15] = {55, 57, 59, 60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79};
   private:
 };
 

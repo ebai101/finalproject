@@ -1,4 +1,4 @@
-#include "SolenoidControl.h"
+  #include "SolenoidControl.h"
 #include "Button.h"
 #include <Audio.h>
 #include <Wire.h>
@@ -13,8 +13,8 @@ AudioControlSGTL5000     audioShield;     //xy=217,198
 // GUItool: end automatically generated code
 
 bool scanning;
-Button btn(36, 1);
-SolenoidControl solenoidControl(37, 38, 39); // turns midi notes into solenoid hits
+Button btn(39, 1);
+SolenoidControl solenoidControl; // turns midi notes into solenoid hits
 
 void setup() {
   Serial.begin(9600);
@@ -25,6 +25,8 @@ void setup() {
 
 void loop() {
   btn.process();
+  solenoidControl.process();
+  
   if(scanning) {
     scanPitchTracker();
   }
@@ -35,7 +37,7 @@ void startPitchTracker() {
   AudioMemory(30);
   audioShield.enable();
   audioShield.inputSelect(AUDIO_INPUT_MIC);
-  audioShield.micGain(36);
+  audioShield.micGain(30);
   notefreq.begin(.15);
 }
 
@@ -62,8 +64,12 @@ int pitchToMidi(float pitch) {
   // converts pitch to midi
   float log2 = log(pitch / 440.0) / log(2);
   float midiVal = 69 + (12 * log2);
-  Serial.println((int)midiVal);
-  return (int)midiVal;
+  if((midiVal + 0.5) >= ((int)midiVal + 1)) {
+    midiVal = (int) midiVal + 1;
+  } else {
+    midiVal = (int) midiVal;
+  }
+  return midiVal;
 }
 
 
